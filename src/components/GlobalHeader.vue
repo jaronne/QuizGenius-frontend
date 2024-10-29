@@ -2,6 +2,7 @@
 import { routes } from "../router/routes";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
+import { useLoginUserStore } from "@/store/userStore";
 
 // 路由跳转事件
 const doMenuClick = (key: string) => {
@@ -25,6 +26,8 @@ const visibleRoutes = routes.filter((item) => {
   }
   return true;
 });
+
+const loginUserStore = useLoginUserStore();
 </script>
 
 <template>
@@ -51,7 +54,10 @@ const visibleRoutes = routes.filter((item) => {
       </a-menu>
     </a-col>
     <a-col flex="100px">
-      <div>
+      <div v-if="loginUserStore.loginUser.id">
+        {{ loginUserStore.loginUser.userName ?? "无名" }}
+      </div>
+      <div v-else>
         <a-button type="primary" href="/user/login">登录</a-button>
       </div>
     </a-col>
