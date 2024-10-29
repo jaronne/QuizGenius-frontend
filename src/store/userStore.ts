@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { getLoginUserUsingGet } from "@/api/userController";
+import ACCESS_ENUM from "@/access/accessEnum";
 
 export const useLoginUserStore = defineStore("loginUser", () => {
   const loginUser = ref<API.LoginUserVO>({
@@ -12,9 +13,7 @@ export const useLoginUserStore = defineStore("loginUser", () => {
     if (res.data.code === 0 && res.data.data) {
       loginUser.value = res.data.data;
     } else {
-      setTimeout(() => {
-        loginUser.value = { userName: "测试用户", id: 1 };
-      }, 3000);
+      loginUser.value = { userRole: ACCESS_ENUM.NOT_LOGIN };
     }
   }
 
