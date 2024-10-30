@@ -70,11 +70,11 @@ import {
 import { APP_SCORING_STRATEGY_MAP, APP_TYPE_MAP } from "@/constant/app";
 
 interface Props {
-  id: string;
+  appId: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  id: () => {
+  appId: () => {
     return "";
   },
 });
@@ -95,11 +95,11 @@ const oldApp = ref<API.AppVO>();
  * 加载数据
  */
 const loadData = async () => {
-  if (!props.id) {
+  if (!props.appId) {
     return;
   }
   const res = await getAppVoByIdUsingGet({
-    id: props.id as any,
+    id: props.appId as any,
   });
   if (res.data.code === 0 && res.data.data) {
     oldApp.value = res.data.data;
@@ -120,9 +120,9 @@ watchEffect(() => {
 const handleSubmit = async () => {
   let res: any;
   // 如果是修改
-  if (props.id) {
+  if (props.appId) {
     res = await editAppUsingPost({
-      id: props.id as any,
+      id: props.appId as any,
       ...form.value,
     });
   } else {
@@ -132,7 +132,7 @@ const handleSubmit = async () => {
   if (res.data.code === 0) {
     message.success("操作成功，即将跳转到应用详情页");
     setTimeout(() => {
-      router.push(`/app/detail/${props.id || res.data.data}`);
+      router.push(`/app/detail/${props.appId || res.data.data}`);
     }, 3000);
   } else {
     message.error("操作失败，" + res.data.message);
